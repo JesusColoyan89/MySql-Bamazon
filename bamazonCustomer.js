@@ -63,16 +63,48 @@ function itemSelect(){
 		type: "input",
 		message: "Please enter the Item ID of the item you wish to purchase",
 		name: "buy"
+	},
+	{
+		type: "input",
+		message: "How many would you like to purchase?",
+		name: "amount"
 	}
-	]).then(function(userChoice) {
-		var buy = userChoice.buy;
-		var query = connection.query(
-			"SELECT * FROM products WHERE item_id = ?", buy, function(err, response) {
-					updateItemCount(response);
-				// console.log(JSON.stringify(response));
-			})
-	});
+	]).then(function(userInput) {
+		connection.query("UPDATE products SET stock_quantity = stock_quantity -? WHERE item_id = ?", [userInput.amount, userInput.buy], function (err, res){
+			console.log("Order Complete, Stock Updated");
+		})
+	})
 };
+
+
+
+// =====================================================================
+// 	then(function(userChoice) {
+// 		var buy = userChoice.buy;
+// 		connection.query(
+// 			"SELECT * FROM products WHERE item_id = ?", buy, function(err, response) {
+				
+// 					inq.prompt([{
+// 		type: "input",
+//  		message: "How many would you like to purchase?",
+//  		name: "amount"
+//  	}
+//  	]).then(function(userAmount) {
+//  		var amount = userAmount.amount;
+//  		connection.query("UPDATE products WHERE item_id = ?, SET stock_quantity = - ?",[buy, amount], function(err, response) {
+//  			console.log("Stock Updated");
+
+//  		})
+//  	})
+// 				// console.log(JSON.stringify(response));
+// 			})
+// 	});
+// };
+
+
+
+
+// ========================================================
 // 			"UPDATE products SET? WHERE?", [stock_quantity, userChoice]
 // 			[
 // 				{
@@ -88,22 +120,22 @@ function itemSelect(){
 // }			
 
 
-function updateItemCount() {
-	inq.prompt([{
-		type: "input",
-		message: "How many would you like to purchase?",
-		name: "amount"
-	}
-	]).then(function(userAmount) {
-		var numberOfItem = userAmount.amount;
-		var query = connection.query(
-			"UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",[buy, numberOfItem], function(err, response) {
-				console.log(response);
-			} )
+// function updateItemCount() {
+// 	inq.prompt([{
+// 		type: "input",
+// 		message: "How many would you like to purchase?",
+// 		name: "amount"
+// 	}
+// 	]).then(function(userAmount) {
+// 		var numberOfItem = userAmount.amount;
+// 		var query = connection.query(
+// 			"UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",[buy, numberOfItem], function(err, response) {
+// 				console.log(response);
+// 			} )
 
-	});
+// 	});
 
-};
+// };
 
 // function addPriceTotal() {
 
